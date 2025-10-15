@@ -1,19 +1,22 @@
 import express from 'express'
+import cors from 'cors'
+import cookieParser from 'cookie-parser'
 
 const app = express()
 
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
-
-app.get('/', (req, res) => {
-  res.send('API is running...')
-})
+app.use(cors({
+  origin: process.env.CORS,
+  credentials: true
+}))
+app.use(express.json({ limit: '16kb' }))
+app.use(express.urlencoded({ extended: true, limit: '16kb' }))
+app.use(cookieParser())
 
 // import routers
 import userRouter from './routes/user.route.js'
 import todoRouter from './routes/todo.route.js'
 
-app.use('/api/users', userRouter)
-app.use('/api/todos', todoRouter)
+app.use('/api/v1/user', userRouter)
+app.use('/api/v1/todo', todoRouter)
 
 export default app
