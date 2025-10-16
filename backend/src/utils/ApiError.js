@@ -1,3 +1,4 @@
+// Custom API Error class to standardize error responses
 class ApiError extends Error {
     constructor(
         statusCode,

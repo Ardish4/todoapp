@@ -17,7 +17,7 @@ const todoSchema = new mongoose.Schema(
     }
   },
   {
-    timestamps: true
+    timestamps: true  // it will automatically add createdAt and updatedAt fields
   }
 )
 

@@ -23,10 +23,11 @@ const userSchema = new mongoose.Schema(
     }
   },
   {
-    timestamps: true
+    timestamps: true // it will automatically add createdAt and updatedAt fields
   }
 )
 
+// Hash password before saving
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) {
     return next()
@@ -36,10 +37,12 @@ userSchema.pre('save', async function (next) {
   next()
 })
 
+// Method to compare entered password with hashed password
 userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password)
 }
 
+// Method to generate Access Token
 userSchema.methods.generateAccessToken = function () {
   return jwt.sign(
     {
@@ -54,6 +57,7 @@ userSchema.methods.generateAccessToken = function () {
   )
 }
 
+// Method to generate Refresh Token
 userSchema.methods.generateRefreshToken = function () {
   return jwt.sign(
     {
