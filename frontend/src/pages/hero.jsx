@@ -152,7 +152,7 @@ function App() {
         {/* Contact Us Heading */}
         <div className="text-center mb-16">
           <h2 className="text-5xl sm:text-6xl font-extrabold text-white leading-tight mb-4">
-            <span className="block">For more informationcd</span>
+            <span className="block">For more information</span>
             <span className="block text-indigo-400">Contact Us.</span>
           </h2>
         </div>
