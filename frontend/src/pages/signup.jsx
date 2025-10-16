@@ -50,9 +50,10 @@ function Signup() {
                                 </nav>
                               </header>
                         
-        
+        <br/>
+        <br/>
         <h2 className="text-3xl font-extrabold mb-8 text-white text-center">
-          Create Your Account here
+          Create Your Account 
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-6">
