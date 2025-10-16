@@ -3,11 +3,6 @@ import { Link } from "react-router-dom";
 
 function Hero() {
   
-  const handleNavClick = (e, path) => {
-    e.preventDefault();
-    console.log(`Navigating to: ${path}`);
-  };
-
   return (
     <div className="min-h-screen bg-gray-900 flex flex-col items-center justify-center p-4">
       
@@ -20,19 +15,22 @@ function Hero() {
          TODO App
         </div>
         <nav className="space-x-4">
-          <a 
-            href="/login" 
-            onClick={(e) => handleNavClick(e, '/login')}
+          <a>
+             <Link 
+            to="/login" 
             className="text-gray-300 hover:text-indigo-400 transition-colors font-medium cursor-pointer"
           >
-            Log In
+            Log-in
+          </Link>
+  
           </a>
-          <a 
-            href="/signup"
-            onClick={(e) => handleNavClick(e, '/signup')}
-            className="px-4 py-2 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 transition-all duration-300 transform hover:scale-105 font-medium cursor-pointer"
-          >
-            Get Started
+          <a>
+           
+            <Link 
+            to="/signup" className="px-4 py-2 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 transition-all duration-300 transform hover:scale-105 font-medium cursor-pointer"> Get Started
+            </Link>
+          
+           
           </a>
         </nav>
       </header>
@@ -54,19 +52,14 @@ function Hero() {
         </p>
 
         <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6">
-          <a 
-            href="/signup"
-            onClick={(e) => handleNavClick(e, '/signup')}
-            className="w-full sm:w-auto px-10 py-4 border border-transparent text-lg font-semibold rounded-xl shadow-xl text-white bg-indigo-600 hover:bg-indigo-700 transition-all duration-300 transform hover:scale-[1.02] cursor-pointer"
-          >
-            Start for Free
+          <a className="w-full sm:w-auto px-10 py-4 border border-transparent text-lg font-semibold rounded-xl shadow-xl text-white bg-indigo-600 hover:bg-indigo-700 transition-all duration-300 transform hover:scale-[1.02] cursor-pointer"> Start for Free
+      
           </a>
-          <a 
-            href="/features"
-            onClick={(e) => handleNavClick(e, '/features')}
-            className="w-full sm:w-auto px-10 py-4 text-lg font-semibold rounded-xl text-indigo-400 border-2 border-indigo-700 bg-gray-800 hover:bg-gray-700 transition-all duration-300 transform hover:scale-[1.02] cursor-pointer"
-          >
-            Learn More
+          <br/>
+          <a>
+            <div className="w-full sm:w-auto px-10 py-4 text-lg font-semibold rounded-xl text-indigo-400 border-2 border-indigo-700 bg-gray-800 hover:bg-gray-700 transition-all duration-300 transform hover:scale-[1.02] cursor-pointer"> Learn More</div>
+          
+           
           </a>
         </div>
       </main>
@@ -111,6 +104,16 @@ function Hero() {
         
       </footer>
 
+<p>
+  <Link 
+            to="/login" 
+            className="text-indigo-400 font-medium 
+                       hover:text-indigo-300 hover:underline 
+                       transition duration-150"
+          >
+            Login
+          </Link>
+</p>
     </div>
   );
 }

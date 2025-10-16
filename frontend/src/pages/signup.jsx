@@ -16,6 +16,8 @@ function Signup() {
   };
 
   return (
+    
+    
     <div className="flex flex-col items-center justify-center min-h-screen p-4 
                     bg-gray-900 
                     font-sans">
@@ -27,6 +29,27 @@ function Signup() {
                       max-w-md w-full 
                       border border-indigo-500/20 
                       transform hover:shadow-indigo-500/30 transition duration-300 ease-in-out">
+                        <header className="absolute top-0 left-0 right-0 p-4 flex justify-between items-center max-w-7xl mx-auto w-full">
+                                <div className="flex items-center text-indigo-400 font-bold text-2x4 tracking-wider"> 
+                                  {/* Replaced CheckCircle with an inline SVG */}
+                                  <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                  </svg>
+                                 TODO
+                                </div>
+                                <nav className="space-x-4">
+                                  <a>
+                                     <Link 
+                                    to="/hero" 
+                                    className="text-indigo-400 hover:text-white transition-colors font-medium cursor-pointer"
+                                  >
+                                    HOME
+                                  </Link>
+                          
+                                  </a>
+                                </nav>
+                              </header>
+                        
         
         <h2 className="text-3xl font-extrabold mb-8 text-white text-center">
           Create Your Account here
@@ -139,6 +162,4 @@ function Signup() {
 }
 
 
-export default function App() {
-    return <Signup />;
-}
+export default Signup;
