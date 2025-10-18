@@ -4,22 +4,22 @@ const photoGallery = [
   {
     title: 'title1',
     description: 'demo dilam',
-    url: 'https://cdn.dribbble.com/users/1864674/screenshots/3832650/for_dribble.jpg',
+    url: '/gallery-images/todo.png',
   },
   {
     title: 'title2',
     description: 'demo dilam.',
-    url: 'https://cdn.dribbble.com/users/949297/screenshots/5656133/attachments/1221872/dribble_iotask__1.png?resize=450x338&vertical=center',
+    url: '/gallery-images/todo.png',
   },
   {
     title: 'title3',
     description: 'demo dilam.',
-    url: 'https://3.bp.blogspot.com/-1hC8QdYXi60/WUZdRjMy4vI/AAAAAAAAXkk/wlF6qo9RTQA-bg9mIyYyik8v8TL_kGaAACLcBGAs/s1600/ios-shot-2.png',
+    url: '/gallery-images/todo.png',
   },
   {
     title: 'title4',
     description: 'demo dilam',
-    url: 'https://cdn.dribbble.com/userupload/4455139/file/original-b118f52fc0cbf6da5508f80afa62e294.png?resize=840x630&vertical=center',
+    url: '/gallery-images/todo.png',
   },
 ];
 
