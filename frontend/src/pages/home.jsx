@@ -38,6 +38,7 @@ const Home = () => {
   const [todo, setTodo] = useState([]);
 
   const navigate = useNavigate()
+  const [createOpen, setCreateOpen] = useState(false)
 
   const handleLogout = () => {
     // TODO: Implement logout functionality here
@@ -52,6 +53,8 @@ const Home = () => {
     setTodo((prev) => [...prev, { name: newTodo, checked: false }]);
     console.log('Creating todo:', newTodo);
     e.target.reset();
+    // close create dialog
+    setCreateOpen(false)
   }
 
   const handleLearnMore = () => {
@@ -89,6 +92,10 @@ const Home = () => {
     setTodo((prev) => prev.filter((_, i) => i !== index))
   }
 
+  const printTodos = () => {
+    console.log('Current Todos:\n', todo)
+  }
+
   return (
     <div className='min-h-screen bg-gray-900 text-white'>
       {/* Navbar */}
@@ -98,7 +105,7 @@ const Home = () => {
           <p className='text-white text-center text-xl select-none'>A</p>
         </div>
         {/* Logout */}
-        <button className='hover:box-shadow hover:bg-gray-800 text-white font-semibold p-1 rounded-4xl flex items-center'>
+        <button onClick={handleLogout} className='hover:box-shadow hover:bg-gray-800 text-white font-semibold p-1 rounded-4xl flex items-center'>
           <AiOutlineLogin color='#625FFF' size={24} className='inline-block' />
         </button>
       </div>
@@ -117,9 +124,9 @@ const Home = () => {
           </EmptyHeader>
           <EmptyContent>
             <div className="flex gap-2">
-              <Dialog>
+              <Dialog open={createOpen} onOpenChange={(open) => setCreateOpen(open)}>
                 <DialogTrigger asChild>
-                  <Button variant="outline" className='bg-indigo-500 border-none hover:bg-indigo-600 hover:text-white'>Create ToDo</Button>
+                  <Button variant="outline" className='bg-indigo-500 border-none hover:bg-indigo-600 hover:text-white' onClick={() => setCreateOpen(true)}>Create ToDo</Button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-[425px] bg-gray-900 text-white border-none">
                   <form onSubmit={handleCreateTodo}>
@@ -153,7 +160,7 @@ const Home = () => {
           {todo.map((item, index) => (
             <div key={index} className="flex justify-between gap-6 mx-4 pl-4 pr-2 py-2 bg-gray-800 rounded-md ">
               <div className="flex items-center gap-3">
-                <Checkbox id={`todo-${index}`} checked={item.checked} onCheckedChange={() => handleToggleTodo(index)} />
+                <Checkbox className="" id={`todo-${index}`} checked={item.checked} onCheckedChange={() => handleToggleTodo(index)} />
                 <Label htmlFor={`todo-${index}`}>{item.name}</Label>
               </div>
               
@@ -203,35 +210,37 @@ const Home = () => {
         </DialogContent>
       </Dialog>
       {/* floating button */}
-      <div className="fixed bottom-6 right-6">
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button variant="outline" className='bg-indigo-500 border-none hover:bg-indigo-600 hover:text-white'>+</Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px] bg-gray-900 text-white border-none">
-            <form onSubmit={handleCreateTodo}>
-              <DialogHeader>
-                <DialogTitle>Create your first ToDo</DialogTitle>
-                <DialogDescription className="text-indigo-300">
-                  Click create when you&apos;re done.
-                </DialogDescription>
-              </DialogHeader>
-              <div className="grid gap-4">
-                <div className="grid gap-3">
-                  <Label htmlFor="name-1">Todo</Label>
-                  <Input id="name-1" name="name" defaultValue="New Todo" className="border-indigo-300 selection:bg-indigo-500" />
+      {todo.length !== 0 && (
+        <div className="fixed bottom-6 right-6">
+          <Dialog open={createOpen} onOpenChange={(open) => setCreateOpen(open)}>
+            <DialogTrigger asChild>
+              <Button variant="outline" className='bg-indigo-500 border-none hover:bg-indigo-600 hover:text-white'>+</Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px] bg-gray-900 text-white border-none">
+              <form onSubmit={handleCreateTodo}>
+                <DialogHeader>
+                  <DialogTitle>Create your first ToDo</DialogTitle>
+                  <DialogDescription className="text-indigo-300">
+                    Click create when you&apos;re done.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="grid gap-4">
+                  <div className="grid gap-3">
+                    <Label htmlFor="name-1">Todo</Label>
+                    <Input id="name-1" name="name" defaultValue="New Todo" className="border-indigo-300 selection:bg-indigo-500" />
+                  </div>
                 </div>
-              </div>
-              <DialogFooter className="mt-4">
-                <DialogClose asChild>
-                  <Button variant="outline" className="bg-transparent text-indigo-500 border-indigo-500 hover:bg-transparent hover:border-indigo-600 hover:text-indigo-600">Cancel</Button>
-                </DialogClose>
-                <Button type="submit" className="bg-indigo-500 border-none hover:bg-indigo-600 hover:text-white">Create</Button>
-              </DialogFooter>
-            </form>
-          </DialogContent>
-        </Dialog>
-      </div>
+                <DialogFooter className="mt-4">
+                  <DialogClose asChild>
+                    <Button variant="outline" className="bg-transparent text-indigo-500 border-indigo-500 hover:bg-transparent hover:border-indigo-600 hover:text-indigo-600">Cancel</Button>
+                  </DialogClose>
+                  <Button type="submit" className="bg-indigo-500 border-none hover:bg-indigo-600 hover:text-white">Create</Button>
+                </DialogFooter>
+              </form>
+            </DialogContent>
+          </Dialog>
+        </div>
+      )}
     </div>
   )
 }
