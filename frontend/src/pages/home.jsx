@@ -49,7 +49,7 @@ const Home = () => {
     const formData = new FormData(e.target);
     const newTodo = formData.get('name');
     if (!newTodo) return;
-    setTodo((prev) => [...prev, newTodo]);
+    setTodo((prev) => [...prev, { name: newTodo, checked: false }]);
     console.log('Creating todo:', newTodo);
     e.target.reset();
   }
@@ -57,18 +57,6 @@ const Home = () => {
   const handleLearnMore = () => {
     // navigate to the hero page
     navigate('/hero')
-  }
-
-  const handleEditTodo = (index) => {
-    // kept for backward compatibility (not used by form)
-    const newTodo = prompt('Edit your todo:', todo[index])
-    if (newTodo) {
-      setTodo((prev) => {
-        const updated = [...prev]
-        updated[index] = newTodo
-        return updated
-      })
-    }
   }
 
   // returns an onSubmit handler for editing a todo at `index`
@@ -79,11 +67,20 @@ const Home = () => {
     if (!newTodo) return
     setTodo((prev) => {
       const updated = [...prev]
-      updated[index] = newTodo
+      const prevItem = updated[index] || { name: '', checked: false }
+      updated[index] = { ...prevItem, name: newTodo }
       return updated
     })
     // close the edit dialog
     setEditingIndex(-1)
+  }
+
+  const handleToggleTodo = (index) => {
+    setTodo((prev) => {
+      const updated = [...prev]
+      updated[index].checked = !updated[index].checked
+      return updated
+    })
   }
 
   const [editingIndex, setEditingIndex] = useState(-1)
@@ -156,8 +153,8 @@ const Home = () => {
           {todo.map((item, index) => (
             <div key={index} className="flex justify-between gap-6 mx-4 pl-4 pr-2 py-2 bg-gray-800 rounded-md ">
               <div className="flex items-center gap-3">
-                <Checkbox id={`todo-${index}`} />
-                <Label htmlFor={`todo-${index}`}>{item}</Label>
+                <Checkbox id={`todo-${index}`} checked={item.checked} onCheckedChange={() => handleToggleTodo(index)} />
+                <Label htmlFor={`todo-${index}`}>{item.name}</Label>
               </div>
               
               <DropdownMenu>
@@ -192,7 +189,7 @@ const Home = () => {
               <div className="grid gap-4">
                 <div className="grid gap-3">
                   <Label htmlFor={`edit-name-${editingIndex}`}>Todo</Label>
-                  <Input id={`edit-name-${editingIndex}`} name="name" defaultValue={todo[editingIndex]} className="border-indigo-300 selection:bg-indigo-500" />
+                  <Input id={`edit-name-${editingIndex}`} name="name" defaultValue={todo[editingIndex]?.name || ''} className="border-indigo-300 selection:bg-indigo-500" />
                 </div>
               </div>
               <DialogFooter className="mt-4">
@@ -205,6 +202,36 @@ const Home = () => {
           )}
         </DialogContent>
       </Dialog>
+      {/* floating button */}
+      <div className="fixed bottom-6 right-6">
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button variant="outline" className='bg-indigo-500 border-none hover:bg-indigo-600 hover:text-white'>+</Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px] bg-gray-900 text-white border-none">
+            <form onSubmit={handleCreateTodo}>
+              <DialogHeader>
+                <DialogTitle>Create your first ToDo</DialogTitle>
+                <DialogDescription className="text-indigo-300">
+                  Click create when you&apos;re done.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="grid gap-4">
+                <div className="grid gap-3">
+                  <Label htmlFor="name-1">Todo</Label>
+                  <Input id="name-1" name="name" defaultValue="New Todo" className="border-indigo-300 selection:bg-indigo-500" />
+                </div>
+              </div>
+              <DialogFooter className="mt-4">
+                <DialogClose asChild>
+                  <Button variant="outline" className="bg-transparent text-indigo-500 border-indigo-500 hover:bg-transparent hover:border-indigo-600 hover:text-indigo-600">Cancel</Button>
+                </DialogClose>
+                <Button type="submit" className="bg-indigo-500 border-none hover:bg-indigo-600 hover:text-white">Create</Button>
+              </DialogFooter>
+            </form>
+          </DialogContent>
+        </Dialog>
+      </div>
     </div>
   )
 }
