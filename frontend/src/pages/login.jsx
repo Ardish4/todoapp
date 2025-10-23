@@ -1,18 +1,39 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 function Login() {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
+  
+  const [error, setError] = useState('');
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    if (error) setError('');
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setError(''); // Clear previous errors
+    console.log('Login Form Data Submitted:', formData);
+    // Implement login logic here
+    axios.post('/api/v1/user/login', {
+      email: formData.email,
+      password: formData.password
+    })
+    .then((response) => {
+      console.log('Login successful:', response.data);
+      // Handle successful login (e.g., redirect or show a success message)
+    })
+    .catch((error) => {
+      // Extract ApiError message from backend response
+      const errorMessage = error.response?.data?.message || 'Login failed. Please try again.';
+      setError(errorMessage);
+      console.error('Login error:', error);
+    });
   };
 
   return (
@@ -65,6 +86,12 @@ function Login() {
           Welcome Back user
         </h2>
 
+        {error && (
+          <div className="bg-red-500/10 border border-red-500 text-red-400 px-4 py-3 rounded-xl mb-4 animate-pulse">
+            <p className="text-sm font-medium text-center">{error}</p>
+          </div>
+        )}
+
         <form
           onSubmit={handleSubmit}
           className='space-y-6'
@@ -83,7 +110,6 @@ function Login() {
               placeholder='Enter your email'
               value={formData.email}
               onChange={handleChange}
-              required
               className='w-full px-4 py-3 
                          bg-gray-700 text-white 
                          border border-gray-600 rounded-xl 
@@ -107,7 +133,6 @@ function Login() {
               placeholder='Enter your password'
               value={formData.password}
               onChange={handleChange}
-              required
               className='w-full px-4 py-3 
                          bg-gray-700 text-white 
                          border border-gray-600 rounded-xl 
