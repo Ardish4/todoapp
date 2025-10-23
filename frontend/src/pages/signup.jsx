@@ -29,8 +29,7 @@ function Signup() {
       email: formData.email,
       password: formData.password
     })
-    .then((response) => {
-      console.log("Signup successful", response.data);
+    .then(() => {
       navigate('/login');
     })
     .catch((error) => {

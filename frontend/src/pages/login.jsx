@@ -26,8 +26,7 @@ function Login() {
       email: formData.email,
       password: formData.password
     })
-    .then((response) => {
-      console.log('Login successful:', response.data);
+    .then(() => {
       // Handle successful login (e.g., redirect or show a success message)
       navigate('/home');
     })

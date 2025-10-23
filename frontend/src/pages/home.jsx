@@ -68,8 +68,8 @@ const Home = () => {
     axios.post('/api/v1/todo/create', {
       title: e.target.name.value
     })
-    .then((response) => {
-      console.log('Create response:', response)
+    .catch((error) => {
+      console.error('Error creating todo:', error)
     })
     // close create dialog
     setCreateOpen(false)
@@ -86,9 +86,6 @@ const Home = () => {
     axios.put(`/api/v1/todo/update/${todo[index]._id}`, {
       title: e.target.name.value
     })
-    .then((response) => {
-      console.log('Edit response:', response)
-    })
     .catch((error) => {
       console.error('Error editing todo:', error)
     })
@@ -98,9 +95,6 @@ const Home = () => {
 
   const handleToggleTodo = (index) => {
     axios.patch(`/api/v1/todo/toggle/${todo[index]._id}`)
-    .then((response) => {
-      console.log('Toggle response:', response)
-    })
     .catch((error) => {
       console.error('Error toggling todo:', error)
     })
@@ -110,9 +104,6 @@ const Home = () => {
 
   const handleDeleteTodo = (index) => {
     axios.delete(`/api/v1/todo/delete/${todo[index]._id}`)
-    .then((response) => {
-      console.log('Delete response:', response)
-    })
     .catch((error) => {
       console.error('Error deleting todo:', error)
     })
