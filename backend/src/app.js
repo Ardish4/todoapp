@@ -25,4 +25,17 @@ import todoRouter from './routes/todo.route.js'
 app.use('/api/v1/user', userRouter)
 app.use('/api/v1/todo', todoRouter)
 
+// Error handling middleware (must be after all routes)
+app.use((err, req, res, next) => {
+  const statusCode = err.statusCode || 500
+  const message = err.message || 'Internal Server Error'
+  
+  res.status(statusCode).json({
+    success: false,
+    statusCode: statusCode,
+    message: message,
+    errors: err.errors || []
+  })
+})
+
 export default app

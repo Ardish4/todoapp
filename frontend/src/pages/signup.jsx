@@ -1,18 +1,44 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+
 function Signup() {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
-    fullName: '',
+    username: '',
     email: '',
     password: ''
   });
 
+  const [error, setError] = useState('');
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    // Clear error when user starts typing
+    if (error) setError('');
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setError(''); // Clear previous errors
+    console.log("Form Data Submitted:", formData);
+    
+    axios.post('/api/v1/user/signup', {
+      username: formData.username,
+      email: formData.email,
+      password: formData.password
+    })
+    .then((response) => {
+      console.log("Signup successful", response.data);
+      navigate('/login');
+    })
+    .catch((error) => {
+      // Extract ApiError message from backend response
+      const errorMessage = error.response?.data?.message || 'Signup failed. Please try again.';
+      setError(errorMessage);
+      console.error("Signup error:", error);
+    });
   };
 
   return (
@@ -56,21 +82,26 @@ function Signup() {
           Create Your Account 
         </h2>
 
+        {error && (
+          <div className="bg-red-500/10 border border-red-500 text-red-400 px-4 py-3 rounded-xl mb-4 animate-pulse">
+            <p className="text-sm font-medium text-center">{error}</p>
+          </div>
+        )}
+
         <form onSubmit={handleSubmit} className="space-y-6">
           
 
           <div>
-            <label htmlFor="fullName" className="block text-sm font-medium text-gray-300 mb-2">
-              Full Name
+            <label htmlFor="username" className="block text-sm font-medium text-gray-300 mb-2">
+              Username
             </label>
             <input
               type="text"
-              id="fullName"
-              name="fullName"
-              placeholder="Enter your name"
-              value={formData.fullName}
+              id="username"
+              name="username"
+              placeholder="Enter your username"
+              value={formData.username}
               onChange={handleChange}
-              required
               className="w-full px-4 py-3 
                          bg-gray-700 text-white 
                          border border-gray-600 rounded-xl 
@@ -93,7 +124,6 @@ function Signup() {
               placeholder="Enter your email"
               value={formData.email}
               onChange={handleChange}
-              required
               className="w-full px-4 py-3 
                          bg-gray-700 text-white 
                          border border-gray-600 rounded-xl 
@@ -116,7 +146,6 @@ function Signup() {
               placeholder="Create a secure password"
               value={formData.password}
               onChange={handleChange}
-              required
               className="w-full px-4 py-3 
                          bg-gray-700 text-white 
                          border border-gray-600 rounded-xl 
