@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 function Login() {
+  const navigate = useNavigate();
+  
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -27,6 +29,7 @@ function Login() {
     .then((response) => {
       console.log('Login successful:', response.data);
       // Handle successful login (e.g., redirect or show a success message)
+      navigate('/home');
     })
     .catch((error) => {
       // Extract ApiError message from backend response

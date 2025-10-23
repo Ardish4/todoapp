@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
 import { AiOutlineLogin } from 'react-icons/ai'
 import { TbFolder } from 'react-icons/tb'
 import { FiMoreVertical } from 'react-icons/fi'
@@ -40,19 +41,36 @@ const Home = () => {
   const navigate = useNavigate()
   const [createOpen, setCreateOpen] = useState(false)
 
+  // get todos from backend on component mount
+  useEffect(() => {
+    axios.get('/api/v1/todo/')
+    .then((response) => {
+      setTodo(response.data.data)
+    })
+    .catch((error) => {
+      console.error('Error fetching todos:', error)
+    })
+  }, [todo])
+
   const handleLogout = () => {
     // TODO: Implement logout functionality here
-    navigate('/login')
+    axios.post('/api/v1/user/logout')
+    .then(() => {
+      navigate('/hero');
+    })
+    .catch((error) => {
+      console.error("Logout error:", error);
+    });
   }
 
   const handleCreateTodo = (e) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
-    const newTodo = formData.get('name');
-    if (!newTodo) return;
-    setTodo((prev) => [...prev, { name: newTodo, checked: false }]);
-    console.log('Creating todo:', newTodo);
-    e.target.reset();
+    axios.post('/api/v1/todo/create', {
+      title: e.target.name.value
+    })
+    .then((response) => {
+      console.log('Create response:', response)
+    })
     // close create dialog
     setCreateOpen(false)
   }
@@ -65,35 +83,39 @@ const Home = () => {
   // returns an onSubmit handler for editing a todo at `index`
   const handleEditSubmit = (index) => (e) => {
     e.preventDefault()
-    const formData = new FormData(e.target)
-    const newTodo = formData.get('name') || ''
-    if (!newTodo) return
-    setTodo((prev) => {
-      const updated = [...prev]
-      const prevItem = updated[index] || { name: '', checked: false }
-      updated[index] = { ...prevItem, name: newTodo }
-      return updated
+    axios.put(`/api/v1/todo/update/${todo[index]._id}`, {
+      title: e.target.name.value
+    })
+    .then((response) => {
+      console.log('Edit response:', response)
+    })
+    .catch((error) => {
+      console.error('Error editing todo:', error)
     })
     // close the edit dialog
     setEditingIndex(-1)
   }
 
   const handleToggleTodo = (index) => {
-    setTodo((prev) => {
-      const updated = [...prev]
-      updated[index].checked = !updated[index].checked
-      return updated
+    axios.patch(`/api/v1/todo/toggle/${todo[index]._id}`)
+    .then((response) => {
+      console.log('Toggle response:', response)
+    })
+    .catch((error) => {
+      console.error('Error toggling todo:', error)
     })
   }
 
   const [editingIndex, setEditingIndex] = useState(-1)
 
   const handleDeleteTodo = (index) => {
-    setTodo((prev) => prev.filter((_, i) => i !== index))
-  }
-
-  const printTodos = () => {
-    console.log('Current Todos:\n', todo)
+    axios.delete(`/api/v1/todo/delete/${todo[index]._id}`)
+    .then((response) => {
+      console.log('Delete response:', response)
+    })
+    .catch((error) => {
+      console.error('Error deleting todo:', error)
+    })
   }
 
   return (
@@ -109,7 +131,9 @@ const Home = () => {
           <AiOutlineLogin color='#625FFF' size={24} className='inline-block' />
         </button>
       </div>
+      {/* Main Content */}
       <div className='flex max-h-screen justify-center items-center'>
+        {/* Empty State */}
         {todo.length === 0 && (
         <Empty>
           <EmptyHeader>
@@ -156,14 +180,16 @@ const Home = () => {
           </EmptyContent>
         </Empty>
         )}
+        {/* ToDo List */}
         <div className={`flex flex-col gap-4 ${todo.length === 0 ? '' : 'min-w-screen'}`}>
           {todo.map((item, index) => (
+            // Single ToDo Item
             <div key={index} className="flex justify-between gap-6 mx-4 pl-4 pr-2 py-2 bg-gray-800 rounded-md ">
               <div className="flex items-center gap-3">
                 <Checkbox className="" id={`todo-${index}`} checked={item.checked} onCheckedChange={() => handleToggleTodo(index)} />
-                <Label htmlFor={`todo-${index}`}>{item.name}</Label>
+                <Label htmlFor={`todo-${index}`}>{item.title}</Label>
               </div>
-              
+              {/* Dropdown icon button */}
               <DropdownMenu>
                 <DropdownMenuTrigger>
                   <Button className="bg-transparent border-indigo-500 hover:bg-gray-700" size="icon" aria-label="Submit">
@@ -173,7 +199,6 @@ const Home = () => {
                 <DropdownMenuContent className="bg-gray-700 text-white">
                   <DropdownMenuLabel>Actions</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  {/* Edit action opens its own dialog */}
                   <DropdownMenuItem onClick={() => setEditingIndex(index)}>Edit</DropdownMenuItem>
                   <DropdownMenuItem onClick={() => handleDeleteTodo(index)}>Delete</DropdownMenuItem>
                 </DropdownMenuContent>
@@ -182,7 +207,7 @@ const Home = () => {
           ))}
         </div>
       </div>
-      {/* Controlled edit dialog so it doesn't close immediately when the dropdown closes */}
+      {/* Edit Dialog */}
       <Dialog open={editingIndex >= 0} onOpenChange={(open) => { if (!open) setEditingIndex(-1) }}>
         <DialogContent className="sm:max-w-[425px] bg-gray-900 text-white border-none">
           {editingIndex >= 0 && (
@@ -196,7 +221,7 @@ const Home = () => {
               <div className="grid gap-4">
                 <div className="grid gap-3">
                   <Label htmlFor={`edit-name-${editingIndex}`}>Todo</Label>
-                  <Input id={`edit-name-${editingIndex}`} name="name" defaultValue={todo[editingIndex]?.name || ''} className="border-indigo-300 selection:bg-indigo-500" />
+                  <Input id={`edit-name-${editingIndex}`} name="name" defaultValue={todo[editingIndex]?.title || ''} className="border-indigo-300 selection:bg-indigo-500" />
                 </div>
               </div>
               <DialogFooter className="mt-4">
