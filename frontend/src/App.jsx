@@ -4,6 +4,7 @@ import Hero from "./pages/hero";
 import Login from "./pages/login";
 import Signup from "./pages/signup";
 import Home from "./pages/home";
+import TestAPI from "./pages/test-api";
 
 import './index.css';
 
@@ -16,6 +17,7 @@ function App() {
       <Route path="/signup" element={<Signup />}/>
       <Route path="/login" element={<Login />} />
       <Route path="/home" element={<Home />} />
+      <Route path="/test-api" element={<TestAPI />} />
     </Routes>
   );
 }

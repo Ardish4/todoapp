@@ -29,14 +29,22 @@ function Signup() {
       email: formData.email,
       password: formData.password
     })
-    .then(() => {
+    .then((response) => {
+      console.log("Signup successful:", response);
       navigate('/login');
     })
     .catch((error) => {
+      // Detailed error logging for debugging
+      console.error("Signup error details:", {
+        message: error.message,
+        response: error.response,
+        status: error.response?.status,
+        data: error.response?.data
+      });
+      
       // Extract ApiError message from backend response
       const errorMessage = error.response?.data?.message || 'Signup failed. Please try again.';
       setError(errorMessage);
-      console.error("Signup error:", error);
     });
   };
 
