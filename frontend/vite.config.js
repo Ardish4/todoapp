@@ -7,7 +7,7 @@ import path from 'path'
 export default defineConfig({
   server: {
     proxy: {
-      '/api': 'http://localhost:3000',
+      '/api': 'https://22doapp.netlify.app',
     }
   },
   plugins: [
