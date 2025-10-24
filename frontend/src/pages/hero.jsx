@@ -2,24 +2,24 @@ import React from 'react';
 
 const photoGallery = [
   {
-    title: 'title1',
-    description: 'demo dilam',
-    url: '/gallery-images/todo.png',
+    title: 'Streamlined Task Management',
+    description: 'Effortlessly organize your daily tasks and never miss a deadline again.',
+    url: '/gallery-images/todo1.png',
   },
   {
-    title: 'title2',
-    description: 'demo dilam.',
-    url: '/gallery-images/todo.png',
+    title: 'Intuitive Workflow!!',
+    description: 'A user-friendly interface designed to make managing your to-dos simple and efficient.',
+    url: '/gallery-images/todo22.png',
   },
   {
-    title: 'title3',
-    description: 'demo dilam.',
-    url: '/gallery-images/todo.png',
+    title: 'Achieve Your Goals',
+    description: 'Break down big projects into manageable steps and track your progress with ease.',
+    url: '/gallery-images/todo3.png',
   },
   {
-    title: 'title4',
-    description: 'demo dilam',
-    url: '/gallery-images/todo.png',
+    title: 'Stay Organized, Anywhere',
+    description: "Access your to-do list from any device, ensuring you're always on top of your schedule",
+    url: '/gallery-images/todo4.jpg',
   },
 ];
 
