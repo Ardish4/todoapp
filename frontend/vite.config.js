@@ -7,7 +7,7 @@ import path from 'path'
 export default defineConfig({
   server: {
     proxy: {
-      '/api': 'https://22doapp.netlify.app',
+      '/api': 'https://two2doapp.onrender.com',
     }
   },
   plugins: [
