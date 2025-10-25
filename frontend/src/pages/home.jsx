@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import api from '../config/api'
+import axios from 'axios'
 import { AiOutlineLogin } from 'react-icons/ai'
 import { TbFolder } from 'react-icons/tb'
 import { FiMoreVertical } from 'react-icons/fi'
@@ -43,7 +43,7 @@ const Home = () => {
 
   // get todos from backend on component mount
   useEffect(() => {
-    api.get('/api/v1/todo/')
+    axios.get('/api/v1/todo/')
     .then((response) => {
       setTodo(response.data.data)
     })
@@ -54,7 +54,7 @@ const Home = () => {
 
   const handleLogout = () => {
     // TODO: Implement logout functionality here
-    api.post('/api/v1/user/logout')
+    axios.post('/api/v1/user/logout')
     .then(() => {
       navigate('/hero');
     })
@@ -65,7 +65,7 @@ const Home = () => {
 
   const handleCreateTodo = (e) => {
     e.preventDefault();
-    api.post('/api/v1/todo/create', {
+    axios.post('/api/v1/todo/create', {
       title: e.target.name.value
     })
     .catch((error) => {
@@ -83,7 +83,7 @@ const Home = () => {
   // returns an onSubmit handler for editing a todo at `index`
   const handleEditSubmit = (index) => (e) => {
     e.preventDefault()
-    api.put(`/api/v1/todo/update/${todo[index]._id}`, {
+    axios.put(`/api/v1/todo/update/${todo[index]._id}`, {
       title: e.target.name.value
     })
     .catch((error) => {
@@ -94,7 +94,7 @@ const Home = () => {
   }
 
   const handleToggleTodo = (index) => {
-    api.patch(`/api/v1/todo/toggle/${todo[index]._id}`)
+    axios.patch(`/api/v1/todo/toggle/${todo[index]._id}`)
     .catch((error) => {
       console.error('Error toggling todo:', error)
     })
@@ -103,7 +103,7 @@ const Home = () => {
   const [editingIndex, setEditingIndex] = useState(-1)
 
   const handleDeleteTodo = (index) => {
-    api.delete(`/api/v1/todo/delete/${todo[index]._id}`)
+    axios.delete(`/api/v1/todo/delete/${todo[index]._id}`)
     .catch((error) => {
       console.error('Error deleting todo:', error)
     })

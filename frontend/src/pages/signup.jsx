@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import api from "../config/api";
+import axios from 'axios';
 
 function Signup() {
   const navigate = useNavigate();
@@ -23,28 +23,20 @@ function Signup() {
     e.preventDefault();
     setError(''); // Clear previous errors
     console.log("Form Data Submitted:", formData);
-    
-    api.post('/api/v1/user/signup', {
+
+    axios.post('/api/v1/user/signup', {
       username: formData.username,
       email: formData.email,
       password: formData.password
     })
-    .then((response) => {
-      console.log("Signup successful:", response);
+    .then(() => {
       navigate('/login');
     })
     .catch((error) => {
-      // Detailed error logging for debugging
-      console.error("Signup error details:", {
-        message: error.message,
-        response: error.response,
-        status: error.response?.status,
-        data: error.response?.data
-      });
-      
       // Extract ApiError message from backend response
       const errorMessage = error.response?.data?.message || 'Signup failed. Please try again.';
       setError(errorMessage);
+      console.error("Signup error:", error);
     });
   };
 

@@ -7,7 +7,7 @@ import path from 'path'
 export default defineConfig({
   server: {
     proxy: {
-      '/api': 'https://two2doapp.onrender.com',
+      '/api': 'http://localhost:3000',
     }
   },
   plugins: [

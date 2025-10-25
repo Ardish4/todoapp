@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import api from '../config/api';
+import axios from 'axios';
 
 function Login() {
   const navigate = useNavigate();
@@ -22,7 +22,7 @@ function Login() {
     setError(''); // Clear previous errors
     console.log('Login Form Data Submitted:', formData);
     // Implement login logic here
-    api.post('/api/v1/user/login', {
+    axios.post('/api/v1/user/login', {
       email: formData.email,
       password: formData.password
     })
